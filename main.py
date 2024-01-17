@@ -1,19 +1,30 @@
+import io
+
 from bs4 import BeautifulSoup
 import requests
+from PIL import Image
 
 response=requests.get("https://unsplash.com/s/photos/domestic-cat")
 webpage=response.text
 soup=BeautifulSoup(webpage,"html.parser")
 all_cat_image_tags=soup.select('.MorZF img')
-cat_images=[]
+i=1
 for img in all_cat_image_tags:
-    cat_images.append(img['src'])
+    response=requests.get(img['src'])
+    image=Image.open(io.BytesIO(response.content))
+    image.save(f'cats/{i}.png')
+
+
+
+
 
 response=requests.get("https://unsplash.com/s/photos/animal")
 webpage=response.text
 soup=BeautifulSoup(webpage,"html.parser")
 all_animal_image_tags=soup.select('.MorZF img')
-animal_images=[]
+i=1
 for img in all_animal_image_tags:
-    animal_images.append(img['src'])
+    response=requests.get(img['src'])
+    image=Image.open(io.BytesIO(response.content))
+    image.save(f'animals/{i}.png')
 
